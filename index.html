@@ -51,19 +51,23 @@
     .btn { display: inline-block; font-size: 14px; border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px; background: #fff; }
     .btn:hover { border-color: #cfd2d7; }
 
-    /* Project list (full-width rows, no cards) */
-    .project-list { display: grid; gap: 28px; }
-    .project { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
-    .project + .project { border-top: 1px solid var(--line); padding-top: 24px; }
-    .project img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
-    .project h3 { margin: 0 0 6px; font-size: 20px; }
-    .project .meta { color: var(--muted); }
-    .project .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-    .project .more { display: none; margin-top: 8px; }
-    .project.expanded .more { display: block; }
+    /* Full-width rows (projects, blog, trips) */
+    .project-list, .entry-list, .trip-list { display: grid; gap: 28px; }
+    .project, .entry, .trip { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
+    .project + .project, .entry + .entry, .trip + .trip { border-top: 1px solid var(--line); padding-top: 24px; }
+    .project img, .entry img, .trip img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+    .project h3, .entry h3, .trip h3 { margin: 0 0 6px; font-size: 20px; }
+    .project .meta, .entry .meta, .trip .meta { color: var(--muted); }
+    .project .actions, .entry .actions, .trip .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .project .more, .entry .more, .trip .more { display: none; margin-top: 8px; }
+    .project.expanded .more, .entry.expanded .more, .trip.expanded .more { display: block; }
     @media (max-width: 720px) {
-      .project { grid-template-columns: 1fr; }
+      .project, .entry, .trip { grid-template-columns: 1fr; }
     }
+
+    /* Cards may also collapse sections (for books) */
+    .card .more { display: none; margin-top: 8px; }
+    .card.expanded .more { display: block; }
 
     /* Photos grid */
     .photos { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
@@ -132,7 +136,7 @@
     <section id="blog" aria-labelledby="blog-title">
       <h2 id="blog-title">Blog</h2>
       <p class="lead">Short notes and write‑ups.</p>
-      <div id="posts" class="grid cards" role="list"></div>
+      <div id="posts" class="entry-list" role="list"></div>
     </section>
 
     <section id="books" aria-labelledby="books-title">
@@ -143,8 +147,8 @@
 
     <section id="photos" aria-labelledby="photos-title">
       <h2 id="photos-title">Travel Photos</h2>
-      <p class="lead">A lightweight, responsive grid with a built‑in lightbox.</p>
-      <div id="photo-grid" class="grid photos" role="list"></div>
+      <p class="lead">Trips grouped with photos and quick notes. Expand to view each gallery.<\/p>
+      <div id="trips" class="trip-list" role="list"></div>
     </section>
   </main>
 
@@ -242,13 +246,21 @@
       "title": "A very small note on anti‑alias filtering",
       "date": "2025-07-12",
       "tags": ["Measurement", "Signals"],
-      "content": "When sampling up to 50 kHz, a first‑order RC set slightly above the band of interest often beats \"infinite\" bandwidth probes in practice…"
+      "summary": "Rule of thumb: an RC just above your passband often wins in practice.",
+      "image": "https://images.unsplash.com/photo-1546900703-cf06143d1239?w=1200&q=60",
+      "content": "When sampling up to 50 kHz, a first‑order RC set slightly above the band of interest often beats \"infinite\" bandwidth probes in practice. You trade a bit of rise time for cleaner spectra and happier ADCs. Keep source impedance reasonable and watch the DAQ's input impedance.
+
+I like to start with fc ~1.2× fmax and iterate."    
     },
     {
       "title": "Choosing flight connectors for small sats",
       "date": "2025-06-30",
       "tags": ["Connectors", "Aerospace"],
-      "content": "Quick criteria: current density, derating, latching, keying, outgassing, EMC, and serviceability. Document backshells and strain relief early."
+      "summary": "Short checklist for connector selection on student spacecraft.",
+      "image": "https://images.unsplash.com/photo-1555617981-dac3880bde15?w=1200&q=60",
+      "content": "Quick criteria: current density, derating, latching, keying, outgassing, EMC, and serviceability. Document backshells and strain relief early.
+
+Pick families with solid crimp ecosystems and avoid rare contacts that are hard to source during integration."    
     }
   ]
   </script>
@@ -270,13 +282,30 @@
   ]
   </script>
 
-  <script id="data-photos" type="application/json">
+  <script id="data-trips" type="application/json">
   [
-    { "src": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=60", "alt": "Ocean cliffs at sunset", "caption": "Farallon vibes" },
-    { "src": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1600&q=60", "alt": "City skyline at dusk", "caption": "Evening lights" },
-    { "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=60", "alt": "Forest trail", "caption": "Quiet walk" },
-    { "src": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=60", "alt": "Mountain lake", "caption": "Thin air" },
-    { "src": "https://images.unsplash.com/photo-1500534314210-7d80a0586b16?w=1600&q=60", "alt": "Desert road", "caption": "Long drive" }
+    {
+      "title": "2024 Morocco Trip",
+      "subtitle": "Spring 2024 • Morocco",
+      "note": "From Marrakech souks to the Atlas foothills — lots of color and mint tea.",
+      "cover": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1600&q=60",
+      "photos": [
+        { "src": "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1600&q=60", "alt": "Blue alley in Chefchaouen", "caption": "Chefchaouen blues" },
+        { "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=60", "alt": "Palm and desert", "caption": "Palm shadows" },
+        { "src": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=60", "alt": "Mountain road", "caption": "Atlas curves" }
+      ]
+    },
+    {
+      "title": "2023 New Zealand Road Trip",
+      "subtitle": "Winter 2023 • South Island",
+      "note": "Long drives, big skies, and a lot of flat whites.",
+      "cover": "https://images.unsplash.com/photo-1500534314210-7d80a0586b16?w=1600&q=60",
+      "photos": [
+        { "src": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=60", "alt": "Lake and mountains", "caption": "Mirror water" },
+        { "src": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=60", "alt": "Sea cliffs", "caption": "Wild coast" },
+        { "src": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1600&q=60", "alt": "City evening", "caption": "Evening lights" }
+      ]
+    }
   ]
   </script>
 
@@ -364,54 +393,97 @@
       projHost.append(article);
     });
 
-    // Render Posts
+    // Render Posts as full-width entries with Read more
     const posts = JSON.parse($('#data-posts').textContent);
     const postHost = $('#posts');
     posts.forEach(post => {
-      const open = () => {
-        const content = create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/\n/g,'</p><p>')}</p>` });
-        openModal(post.title, content);
-      };
-      const card = create('article', { class:'card', role:'listitem' }, [
-        create('h3', {}, post.title),
-        create('div', { class:'meta' }, `${formatDate(post.date)}${post.tags?.length? ' • ' + post.tags.join(', ') : ''}`),
-        create('div', { class:'row' }, [ create('button', { class:'btn', onclick: open }, 'Read') ])
+      const article = create('article', { class:'entry', role:'listitem' });
+      const img = post.image ? create('img', { src: post.image, alt: post.title, loading:'lazy', onerror: (e)=>{ e.target.style.display='none'; } }) : null;
+      if (img) article.append(create('div', {}, img));
+      const title = create('h3', {}, post.title);
+      const meta = create('div', { class:'meta' }, `${formatDate(post.date)}${post.tags?.length? ' • ' + post.tags.join(', ') : ''}`);
+      const summary = post.summary ? create('p', { class:'meta' }, post.summary) : null;
+      const more = create('div', { class:'more' }, [
+        create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/
+/g,'</p><p>')}</p>` })
       ]);
-      postHost.append(card);
+      const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'Read more');
+      readBtn.addEventListener('click', () => {
+        const ex = article.classList.toggle('expanded');
+        readBtn.textContent = ex ? 'Read less' : 'Read more';
+        readBtn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+      });
+      const right = create('div', {}, [ title, meta, summary, create('div', { class:'actions' }, [ readBtn ]), more ]);
+      article.append(right);
+      postHost.append(article);
     });
 
-    // Render Books
+    // Render Books (cards with optional Read more)
     const books = JSON.parse($('#data-books').textContent);
     const bookHost = $('#books-list');
     books.forEach(b => {
-      const card = create('article', { class:'card', role:'listitem' }, [
+      const card = create('article', { class:'card', role:'listitem' });
+      card.append(
         create('h3', {}, b.title),
         create('div', { class:'meta' }, `${b.author || ''}`),
         create('div', { class:'meta' }, `Rating: ${'★'.repeat(b.rating||0)}${'☆'.repeat(5-(b.rating||0))}`),
         create('p', {}, b.blurb||'')
-      ]);
+      );
+      if (b.review) {
+        const more = create('div', { class:'more' }, [ create('div', { class:'content-body', html: `<p>${(b.review||'').replace(/
+/g,'</p><p>')}</p>` }) ]);
+        const readBtn = create('button', { class:'btn' }, 'Read more');
+        readBtn.addEventListener('click', () => {
+          const ex = card.classList.toggle('expanded');
+          readBtn.textContent = ex ? 'Read less' : 'Read more';
+        });
+        card.append(create('div', { class:'row' }, [readBtn]), more);
+      }
       bookHost.append(card);
     });
 
-    // Render Photos + Lightbox
-    const photos = JSON.parse($('#data-photos').textContent);
-    const photoHost = $('#photo-grid');
-    photos.forEach((ph, i) => {
-      const thumb = create('div', { class:'photo', role:'listitem' });
-      const im = create('img', { alt: ph.alt||'', loading:'lazy' });
-      im.src = ph.src; // set after
-      im.onerror = () => { im.src = `https://via.placeholder.com/800x600?text=Photo`; };
-      thumb.append(im);
-      thumb.addEventListener('click', () => {
-        const wrap = create('div', { class:'content lightbox' });
-        const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
-        wrap.append(big);
-        openModal(ph.caption || 'Photo', wrap, true);
+    // Render Trips + Lightbox (grouped galleries with toggle)
+    const trips = JSON.parse($('#data-trips').textContent);
+    const tripsHost = $('#trips');
+    trips.forEach(tr => {
+      const article = create('article', { class:'trip', role:'listitem' });
+      const cover = tr.cover || (tr.photos && tr.photos[0]?.src);
+      const img = cover ? create('img', { src: cover, alt: tr.title, loading:'lazy', onerror:(e)=>{ e.target.style.display='none'; } }) : null;
+      if (img) article.append(create('div', {}, img));
+      const title = create('h3', {}, tr.title);
+      const meta = tr.subtitle ? create('div', { class:'meta' }, tr.subtitle) : null;
+      const note = tr.note ? create('p', { class:'meta' }, tr.note) : null;
+
+      const gallery = create('div', { class:'grid photos' });
+      (tr.photos||[]).forEach(ph => {
+        const thumb = create('div', { class:'photo' });
+        const im = create('img', { src: ph.src, alt: ph.alt||'', loading:'lazy' });
+        im.onerror = () => { im.src = `https://via.placeholder.com/800x600?text=Photo`; };
+        thumb.append(im);
+        thumb.addEventListener('click', () => {
+          const wrap = create('div', { class:'content lightbox' });
+          const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
+          wrap.append(big);
+          openModal(ph.caption || tr.title, wrap, true);
+        });
+        gallery.append(thumb);
       });
-      photoHost.append(thumb);
+
+      const more = create('div', { class:'more' }, [ gallery ]);
+      const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'View photos');
+      readBtn.addEventListener('click', () => {
+        const ex = article.classList.toggle('expanded');
+        readBtn.textContent = ex ? 'Hide photos' : 'View photos';
+        readBtn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+      });
+
+      const right = create('div', {}, [ title, meta, note, create('div', { class:'actions' }, [ readBtn ]), more ]);
+      article.append(right);
+      tripsHost.append(article);
     });
 
     // Year
+    $('#year').textContent = new Date().getFullYear();
     $('#year').textContent = new Date().getFullYear();
 
     // Smooth scroll for nav links
