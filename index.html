@@ -51,6 +51,20 @@
     .btn { display: inline-block; font-size: 14px; border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px; background: #fff; }
     .btn:hover { border-color: #cfd2d7; }
 
+    /* Project list (full-width rows, no cards) */
+    .project-list { display: grid; gap: 28px; }
+    .project { display: grid; grid-template-columns: 320px 1fr; gap: 18px; align-items: start; }
+    .project + .project { border-top: 1px solid var(--line); padding-top: 24px; }
+    .project img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); background: #fff; }
+    .project h3 { margin: 0 0 6px; font-size: 20px; }
+    .project .meta { color: var(--muted); }
+    .project .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .project .more { display: none; margin-top: 8px; }
+    .project.expanded .more { display: block; }
+    @media (max-width: 720px) {
+      .project { grid-template-columns: 1fr; }
+    }
+
     /* Photos grid */
     .photos { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
     .photo { border-radius: 12px; overflow: hidden; position: relative; cursor: zoom-in; background: #fafafa; border: 1px solid var(--line); }
@@ -112,7 +126,7 @@
     <section id="portfolio" aria-labelledby="portfolio-title">
       <h2 id="portfolio-title">Engineering Portfolio</h2>
       <p class="lead">Selected projects with links to docs or code.</p>
-      <div id="projects" class="grid cards" role="list"></div>
+      <div id="projects" class="project-list" role="list"></div>
     </section>
 
     <section id="blog" aria-labelledby="blog-title">
@@ -160,6 +174,7 @@
     {
       "title": "Hollow Cathode Test Stand (Marathon Fusion)",
       "summary": "Designed control electronics, safety interlocks, and DAQ for a plasma centrifuge testbed.",
+      "details": "Built DAQ and control around LabJack / microcontrollers, implemented interlocks for HV supplies, and produced test procedures + wiring docs. Integrated sensors and logged runs for analysis.",
       "links": [
         {"label": "GitHub", "href": "https://github.com/Anton153"},
         {"label": "Report", "href": "#"}
@@ -170,6 +185,7 @@
     {
       "title": "Line‑Following Robot in Gazebo",
       "summary": "ROS Noetic simulation, camera‑based lane keeping with PID and imitation learning.",
+      "details": "Implemented PID baseline and an imitation‑learning policy from recorded demonstrations. Built tooling to log frames + cmd_vel, trained a small CNN, and compared lap stability vs loss.",
       "links": [
         {"label": "Code", "href": "https://github.com/Anton153"},
         {"label": "Write‑up", "href": "#"}
@@ -180,6 +196,7 @@
     {
       "title": "UBC Orbit CubeSat — Firmware & Controls",
       "summary": "Firmware/controls work on a student satellite program; data acquisition and system integration.",
+      "details": "Wrote firmware and test utilities for subsystem bring‑up, participated in hardware‑in‑the‑loop testing, and contributed to data handling + telemetry procedures.",
       "links": [
         {"label": "UBC Orbit", "href": "https://github.com/Anton153"}
       ],
@@ -189,6 +206,7 @@
     {
       "title": "High‑Temperature Thermal Cycler (MKS Instruments)",
       "summary": "20–800°C thermal system with closed‑loop control; modeling, control, and hardware bring‑up.",
+      "details": "Developed ramp/soak profiles, tuned PID, and built a simple interface for logging and setpoint control. Verified thermal response with sensors and generated a BOM.",
       "links": [
         {"label": "Notes", "href": "#"}
       ],
@@ -198,6 +216,7 @@
     {
       "title": "Plasma Centrifuge Contactor Panel",
       "summary": "High‑current distribution with relays and safety interlocks; schematic capture and wiring.",
+      "details": "Designed wiring, interlocks, and contactor control for the test stand; documented harnessing and labeling for safe operation and maintenance.",
       "links": [
         {"label": "Schematic", "href": "#"}
       ],
@@ -207,6 +226,7 @@
     {
       "title": "Burger‑Building Robots (Mechanical Design)",
       "summary": "Two robots with claws, conveyor, and omni/mecanum drivetrains; designed in SolidWorks and fabricated via laser‑cutting/3D‑printing.",
+      "details": "Led mechanical design, produced assemblies and drawings, and oversaw fabrication + testing. Explored claw kinematics and belt timing.",
       "links": [
         {"label": "Gallery", "href": "#"}
       ],
@@ -309,21 +329,39 @@
     if (cfg.email) { $('#contact-link').href = `mailto:${cfg.email}`; $('#email-btn').href = `mailto:${cfg.email}`; }
     if (cfg.resume) { $('#resume-btn').href = cfg.resume; }
 
-    // Render Projects
+    // Render Projects (full-width rows with Read more)
     const projects = JSON.parse($('#data-projects').textContent);
     const projHost = $('#projects');
     projects.forEach(p => {
+      const article = create('article', { class:'project', role:'listitem' });
+
       const img = p.image ? create('img', { src: p.image, alt: p.title, loading:'lazy', onerror: (e)=>{ e.target.style.display='none'; } }) : null;
-      const links = (p.links||[]).map(l => create('a', { href: l.href, class:'btn', target:'_blank', rel:'noopener' }, l.label));
-      const tags = (p.tags||[]).map(t => create('span', { class:'tag' }, t));
-      const card = create('article', { class:'card', role:'listitem' }, [
-        img,
-        create('h3', {}, p.title),
-        create('p', { class:'meta' }, p.summary||''),
-        tags.length ? create('div', { class:'tags' }, tags) : null,
-        links.length ? create('div', { class:'row' }, links) : null
+      if (img) article.append(create('div', {}, img));
+
+      const title = create('h3', {}, p.title);
+      const summary = create('p', { class:'meta' }, p.summary || '');
+
+      const more = create('div', { class:'more' }, [
+        p.details ? create('p', {}, p.details) : null,
+        (p.tags?.length ? create('div', { class:'tags' }, p.tags.map(t => create('span', { class:'tag' }, t))) : null),
+        (p.links?.length ? create('div', { class:'actions' }, p.links.map(l => create('a', { href:l.href, class:'btn', target:'_blank', rel:'noopener' }, l.label))) : null)
       ]);
-      projHost.append(card);
+
+      const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'Read more');
+      readBtn.addEventListener('click', () => {
+        const ex = article.classList.toggle('expanded');
+        readBtn.textContent = ex ? 'Read less' : 'Read more';
+        readBtn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+      });
+
+      const right = create('div', {}, [
+        title,
+        summary,
+        create('div', { class:'actions' }, [ readBtn ]),
+        more
+      ]);
+      article.append(right);
+      projHost.append(article);
     });
 
     // Render Posts
