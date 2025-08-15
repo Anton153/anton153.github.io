@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Engineering & Notes — Simple Portfolio</title>
+  <title>Anton Shoham — Engineering & Notes</title>
   <meta name="description" content="A minimal personal website for an engineering portfolio, blog posts, book reviews, and travel photos." />
   <style>
     /* ===== Minimal, uncluttered design ===== */
@@ -80,12 +80,14 @@
 <body>
   <header class="site-header" role="banner">
     <nav class="nav" aria-label="Primary">
-      <div class="brand">Engineering & Notes</div>
+      <div class="brand" id="brand">Anton Shoham</div>
       <div class="links">
+        <a href="#about">About</a>
         <a href="#portfolio">Portfolio</a>
         <a href="#blog">Blog</a>
         <a href="#books">Books</a>
         <a href="#photos">Travel</a>
+        <a id="contact-link" href="mailto:you@example.com">Contact</a>
       </div>
     </nav>
   </header>
@@ -93,7 +95,18 @@
   <main>
     <section id="intro" aria-labelledby="intro-title">
       <h1 id="intro-title">Simple, distraction‑free home on the web</h1>
-      <p class="lead">An uncluttered space for an engineering portfolio, occasional blog posts, book reviews, and travel photos. Everything here is static and fast.</p>
+      <p class="lead">An uncluttered space for my engineering portfolio, notes, book reviews, and travel photos.</p>
+    </section>
+
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p class="lead">Hi, I'm Anton Shoham — an Engineering Physics student at UBC who enjoys building practical systems across plasma, robotics, controls, and embedded software.</p>
+      <div class="spacer"></div>
+      <p>I’ve worked on a hollow cathode development project at Marathon Fusion (plasma centrifuge testbed, DAQ & control electronics), firmware and controls on UBC Orbit’s CubeSat, and previously built a high‑temperature thermal cycler at MKS Instruments. On the fun side, I’ve designed two burger‑building robots and like lightweight simulation + control projects in ROS.</p>
+      <div class="row" style="margin-top:12px;">
+        <a id="resume-btn" class="btn" href="files/Anton_Shoham_Resume.pdf" download>Download Résumé</a>
+        <a id="email-btn" class="btn" href="mailto:you@example.com">Email me</a>
+      </div>
     </section>
 
     <section id="portfolio" aria-labelledby="portfolio-title">
@@ -122,7 +135,7 @@
   </main>
 
   <footer>
-    <div>© <span id="year"></span> Your Name. • <a href="#portfolio">Portfolio</a> • <a href="#blog">Blog</a> • <a href="#books">Books</a> • <a href="#photos">Travel</a></div>
+    <div>© <span id="year"></span> <span id="owner">Anton Shoham</span>. • <a href="#portfolio">Portfolio</a> • <a href="#blog">Blog</a> • <a href="#books">Books</a> • <a href="#photos">Travel</a></div>
   </footer>
 
   <!-- Post / Lightbox Modal -->
@@ -136,37 +149,69 @@
     </div>
   </div>
 
+  <!-- ===== Site config (edit email/resume path here) ===== -->
+  <script id="site-config" type="application/json">
+  { "owner": "Anton Shoham", "email": "you@example.com", "resume": "files/Anton_Shoham_Resume.pdf" }
+  </script>
+
   <!-- ===== Inline content data (edit these to populate your site) ===== -->
   <script id="data-projects" type="application/json">
   [
     {
-      "title": "Hollow Cathode Test Stand",
-      "summary": "Designed control electronics and DAQ for plasma centrifuge experiments.",
+      "title": "Hollow Cathode Test Stand (Marathon Fusion)",
+      "summary": "Designed control electronics, safety interlocks, and DAQ for a plasma centrifuge testbed.",
       "links": [
-        {"label": "GitHub", "href": "https://github.com/"},
-        {"label": "PDF", "href": "#"}
+        {"label": "GitHub", "href": "https://github.com/Anton153"},
+        {"label": "Report", "href": "#"}
       ],
-      "tags": ["Controls", "DAQ", "Plasma"],
+      "tags": ["Plasma", "DAQ", "Controls"],
       "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=60"
     },
     {
-      "title": "Line‑Following Robot (Gazebo)",
-      "summary": "ROS Noetic sim, PID & imitation learning for lane keeping.",
+      "title": "Line‑Following Robot in Gazebo",
+      "summary": "ROS Noetic simulation, camera‑based lane keeping with PID and imitation learning.",
       "links": [
-        {"label": "Code", "href": "https://github.com/"},
+        {"label": "Code", "href": "https://github.com/Anton153"},
         {"label": "Write‑up", "href": "#"}
       ],
       "tags": ["ROS", "Gazebo", "Control"],
       "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=60"
     },
     {
-      "title": "Thermal Cycler",
-      "summary": "Rapid thermal system: 20°C↔800°C with closed‑loop control.",
+      "title": "UBC Orbit CubeSat — Firmware & Controls",
+      "summary": "Firmware/controls work on a student satellite program; data acquisition and system integration.",
+      "links": [
+        {"label": "UBC Orbit", "href": "https://github.com/Anton153"}
+      ],
+      "tags": ["CubeSat", "Firmware", "Embedded"],
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=60"
+    },
+    {
+      "title": "High‑Temperature Thermal Cycler (MKS Instruments)",
+      "summary": "20–800°C thermal system with closed‑loop control; modeling, control, and hardware bring‑up.",
       "links": [
         {"label": "Notes", "href": "#"}
       ],
-      "tags": ["Thermal", "Embedded"],
+      "tags": ["Thermal", "Embedded", "Control"],
       "image": "https://images.unsplash.com/photo-1559757175-08c8eeec75a3?w=1200&q=60"
+    },
+    {
+      "title": "Plasma Centrifuge Contactor Panel",
+      "summary": "High‑current distribution with relays and safety interlocks; schematic capture and wiring.",
+      "links": [
+        {"label": "Schematic", "href": "#"}
+      ],
+      "tags": ["Power", "Safety", "Schematics"],
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=60"
+    },
+    {
+      "title": "Burger‑Building Robots (Mechanical Design)",
+      "summary": "Two robots with claws, conveyor, and omni/mecanum drivetrains; designed in SolidWorks and fabricated via laser‑cutting/3D‑printing.",
+      "links": [
+        {"label": "Gallery", "href": "#"}
+      ],
+      "tags": ["Mechanical", "Robotics", "SolidWorks"],
+      "image": "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=1200&q=60"
     }
   ]
   </script>
@@ -220,6 +265,9 @@
     const $ = (sel, el=document) => el.querySelector(sel);
     const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
 
+    // Config
+    const cfg = JSON.parse($('#site-config').textContent || '{}');
+
     const formatDate = iso => {
       try { return new Date(iso).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'2-digit' }); } catch { return iso; }
     };
@@ -256,6 +304,11 @@
     $('#backdrop').addEventListener('click', (e) => { if (e.target.id === 'backdrop') closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
+    // Apply config
+    if (cfg.owner) { $('#brand').textContent = cfg.owner; $('#owner').textContent = cfg.owner; }
+    if (cfg.email) { $('#contact-link').href = `mailto:${cfg.email}`; $('#email-btn').href = `mailto:${cfg.email}`; }
+    if (cfg.resume) { $('#resume-btn').href = cfg.resume; }
+
     // Render Projects
     const projects = JSON.parse($('#data-projects').textContent);
     const projHost = $('#projects');
@@ -278,7 +331,8 @@
     const postHost = $('#posts');
     posts.forEach(post => {
       const open = () => {
-        const content = create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/\n/g,'</p><p>')}</p>` });
+        const content = create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/
+/g,'</p><p>')}</p>` });
         openModal(post.title, content);
       };
       const card = create('article', { class:'card', role:'listitem' }, [
@@ -292,7 +346,6 @@
     // Render Books
     const books = JSON.parse($('#data-books').textContent);
     const bookHost = $('#books-list');
-    const stars = n => '★★★★★☆☆☆☆☆'.slice(5 - Math.max(0, Math.min(5,n)), 10 - Math.max(0, Math.min(5,n)));
     books.forEach(b => {
       const card = create('article', { class:'card', role:'listitem' }, [
         create('h3', {}, b.title),
@@ -327,7 +380,7 @@
     // Smooth scroll for nav links
     $$('.links a').forEach(a => a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
-      if (id.startsWith('#')) {
+      if (id && id.startsWith('#')) {
         e.preventDefault();
         document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
