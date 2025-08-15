@@ -147,7 +147,7 @@
 
     <section id="photos" aria-labelledby="photos-title">
       <h2 id="photos-title">Travel Photos</h2>
-      <p class="lead">Trips grouped with photos and quick notes. Expand to view each gallery.<\/p>
+      <p class="lead">Trips grouped with photos and quick notes. Expand to view each gallery.</p>
       <div id="trips" class="trip-list" role="list"></div>
     </section>
   </main>
@@ -248,9 +248,7 @@
       "tags": ["Measurement", "Signals"],
       "summary": "Rule of thumb: an RC just above your passband often wins in practice.",
       "image": "https://images.unsplash.com/photo-1546900703-cf06143d1239?w=1200&q=60",
-      "content": "When sampling up to 50 kHz, a first‑order RC set slightly above the band of interest often beats \"infinite\" bandwidth probes in practice. You trade a bit of rise time for cleaner spectra and happier ADCs. Keep source impedance reasonable and watch the DAQ's input impedance.
-
-I like to start with fc ~1.2× fmax and iterate."    
+      "content": "When sampling up to 50 kHz, a first‑order RC set slightly above the band of interest often beats \"infinite\" bandwidth probes in practice. You trade a bit of rise time for cleaner spectra and happier ADCs. Keep source impedance reasonable and watch the DAQ's input impedance.\n\nI like to start with fc ~1.2× fmax and iterate."
     },
     {
       "title": "Choosing flight connectors for small sats",
@@ -258,9 +256,7 @@ I like to start with fc ~1.2× fmax and iterate."
       "tags": ["Connectors", "Aerospace"],
       "summary": "Short checklist for connector selection on student spacecraft.",
       "image": "https://images.unsplash.com/photo-1555617981-dac3880bde15?w=1200&q=60",
-      "content": "Quick criteria: current density, derating, latching, keying, outgassing, EMC, and serviceability. Document backshells and strain relief early.
-
-Pick families with solid crimp ecosystems and avoid rare contacts that are hard to source during integration."    
+      "content": "Quick criteria: current density, derating, latching, keying, outgassing, EMC, and serviceability. Document backshells and strain relief early.\n\nPick families with solid crimp ecosystems and avoid rare contacts that are hard to source during integration."
     }
   ]
   </script>
@@ -404,8 +400,7 @@ Pick families with solid crimp ecosystems and avoid rare contacts that are hard 
       const meta = create('div', { class:'meta' }, `${formatDate(post.date)}${post.tags?.length? ' • ' + post.tags.join(', ') : ''}`);
       const summary = post.summary ? create('p', { class:'meta' }, post.summary) : null;
       const more = create('div', { class:'more' }, [
-        create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/
-/g,'</p><p>')}</p>` })
+        create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/\n/g,'</p><p>')}</p>` })
       ]);
       const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'Read more');
       readBtn.addEventListener('click', () => {
@@ -430,8 +425,7 @@ Pick families with solid crimp ecosystems and avoid rare contacts that are hard 
         create('p', {}, b.blurb||'')
       );
       if (b.review) {
-        const more = create('div', { class:'more' }, [ create('div', { class:'content-body', html: `<p>${(b.review||'').replace(/
-/g,'</p><p>')}</p>` }) ]);
+        const more = create('div', { class:'more' }, [ create('div', { class:'content-body', html: `<p>${(b.review||'').replace(/\n/g,'</p><p>')}</p>` }) ]);
         const readBtn = create('button', { class:'btn' }, 'Read more');
         readBtn.addEventListener('click', () => {
           const ex = card.classList.toggle('expanded');
