@@ -104,7 +104,7 @@
       <div class="spacer"></div>
       <p>I’ve worked on a hollow cathode development project at Marathon Fusion (plasma centrifuge testbed, DAQ & control electronics), firmware and controls on UBC Orbit’s CubeSat, and previously built a high‑temperature thermal cycler at MKS Instruments. On the fun side, I’ve designed two burger‑building robots and like lightweight simulation + control projects in ROS.</p>
       <div class="row" style="margin-top:12px;">
-        <a id="resume-btn" class="btn" href="Anton_Shoham_Resume.pdf" download>Download Résumé</a>
+        <a id="resume-btn" class="btn" href="Anton_Shoham_Resume.pdf" target="_blank" rel="noopener">Open Résumé</a>
         <a id="email-btn" class="btn" href="mailto:you@example.com">Email me</a>
       </div>
     </section>
@@ -151,7 +151,7 @@
 
   <!-- ===== Site config (edit email/resume path here) ===== -->
   <script id="site-config" type="application/json">
-  { "owner": "Anton Shoham", "email": "antonshoham@gmail.com", "resume": "files/Anton_Shoham_Resume.pdf" }
+  { "owner": "Anton Shoham", "email": "you@example.com", "resume": "Anton_Shoham_Resume.pdf" }
   </script>
 
   <!-- ===== Inline content data (edit these to populate your site) ===== -->
@@ -331,8 +331,7 @@
     const postHost = $('#posts');
     posts.forEach(post => {
       const open = () => {
-        const content = create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/
-/g,'</p><p>')}</p>` });
+        const content = create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/\n/g,'</p><p>')}</p>` });
         openModal(post.title, content);
       };
       const card = create('article', { class:'card', role:'listitem' }, [
