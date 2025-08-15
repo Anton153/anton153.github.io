@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Engineering & Notes — Simple Portfolio</title>
+  <meta name="description" content="A minimal personal website for an engineering portfolio, blog posts, book reviews, and travel photos." />
+  <style>
+    /* ===== Minimal, uncluttered design ===== */
+    :root {
+      --bg: #ffffff;
+      --text: #0a0a0a;
+      --muted: #6b7280; /* cool gray */
+      --card: #f7f7f7;
+      --line: #e5e7eb;
+      --accent: #111827; /* near-black */
+      --radius: 14px;
+      --maxw: 1000px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* Header */
+    .site-header { position: sticky; top: 0; backdrop-filter: saturate(180%) blur(8px); background: rgba(255,255,255,0.85); border-bottom: 1px solid var(--line); }
+    .nav { max-width: var(--maxw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; }
+    .brand { font-weight: 700; letter-spacing: 0.2px; }
+    .links { display: flex; gap: 18px; }
+    .links a { color: var(--muted); font-weight: 500; }
+    .links a:hover, .links a:focus { color: var(--text); }
+
+    /* Layout */
+    main { max-width: var(--maxw); margin: 0 auto; padding: 28px 16px 64px; }
+    section { padding: 40px 0 20px; border-bottom: 1px solid var(--line); }
+    section:last-of-type { border-bottom: 0; }
+    h1, h2 { line-height: 1.2; margin: 0 0 8px; }
+    h1 { font-size: clamp(28px, 3vw, 36px); }
+    h2 { font-size: clamp(22px, 2.4vw, 28px); margin-top: 8px; }
+    p.lead { color: var(--muted); margin: 6px 0 0; }
+
+    /* Cards & grids */
+    .grid { display: grid; gap: 16px; }
+    .grid.cards { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .card { border: 1px solid var(--line); background: var(--card); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .card h3 { margin: 0; font-size: 18px; }
+    .meta { color: var(--muted); font-size: 14px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 12px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: #374151; background: #fff; }
+    .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .btn { display: inline-block; font-size: 14px; border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px; background: #fff; }
+    .btn:hover { border-color: #cfd2d7; }
+
+    /* Photos grid */
+    .photos { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .photo { border-radius: 12px; overflow: hidden; position: relative; cursor: zoom-in; background: #fafafa; border: 1px solid var(--line); }
+
+    /* Footer */
+    footer { max-width: var(--maxw); margin: 0 auto; padding: 28px 16px 60px; color: var(--muted); }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 50; }
+    .modal { width: min(860px, 94vw); max-height: 88vh; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: grid; grid-template-rows: auto 1fr; }
+    .modal header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+    .modal header h3 { margin: 0; font-size: 18px; }
+    .modal .content { padding: 16px; overflow: auto; }
+    .modal .close { border: 1px solid var(--line); background: #fff; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+
+    /* Lightbox image */
+    .lightbox img { width: 100%; height: auto; }
+    .lightbox .content { padding: 0; background: #000; }
+    .lightbox header { background: #000; color: #fff; border-bottom-color: rgba(255,255,255,0.15); }
+    .lightbox button { background: #111; color: #fff; border-color: rgba(255,255,255,0.2); }
+
+    /* Small helpers */
+    .spacer { height: 8px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <nav class="nav" aria-label="Primary">
+      <div class="brand">Engineering & Notes</div>
+      <div class="links">
+        <a href="#portfolio">Portfolio</a>
+        <a href="#blog">Blog</a>
+        <a href="#books">Books</a>
+        <a href="#photos">Travel</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="intro" aria-labelledby="intro-title">
+      <h1 id="intro-title">Simple, distraction‑free home on the web</h1>
+      <p class="lead">An uncluttered space for an engineering portfolio, occasional blog posts, book reviews, and travel photos. Everything here is static and fast.</p>
+    </section>
+
+    <section id="portfolio" aria-labelledby="portfolio-title">
+      <h2 id="portfolio-title">Engineering Portfolio</h2>
+      <p class="lead">Selected projects with links to docs or code.</p>
+      <div id="projects" class="grid cards" role="list"></div>
+    </section>
+
+    <section id="blog" aria-labelledby="blog-title">
+      <h2 id="blog-title">Blog</h2>
+      <p class="lead">Short notes and write‑ups.</p>
+      <div id="posts" class="grid cards" role="list"></div>
+    </section>
+
+    <section id="books" aria-labelledby="books-title">
+      <h2 id="books-title">Book Reviews</h2>
+      <p class="lead">Quick takes with a simple rating.</p>
+      <div id="books-list" class="grid cards" role="list"></div>
+    </section>
+
+    <section id="photos" aria-labelledby="photos-title">
+      <h2 id="photos-title">Travel Photos</h2>
+      <p class="lead">A lightweight, responsive grid with a built‑in lightbox.</p>
+      <div id="photo-grid" class="grid photos" role="list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> Your Name. • <a href="#portfolio">Portfolio</a> • <a href="#blog">Blog</a> • <a href="#books">Books</a> • <a href="#photos">Travel</a></div>
+  </footer>
+
+  <!-- Post / Lightbox Modal -->
+  <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="modal" class="modal" role="document" aria-labelledby="modal-title">
+      <header>
+        <h3 id="modal-title"></h3>
+        <button class="close" id="modal-close" aria-label="Close">Close</button>
+      </header>
+      <div class="content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- ===== Inline content data (edit these to populate your site) ===== -->
+  <script id="data-projects" type="application/json">
+  [
+    {
+      "title": "Hollow Cathode Test Stand",
+      "summary": "Designed control electronics and DAQ for plasma centrifuge experiments.",
+      "links": [
+        {"label": "GitHub", "href": "https://github.com/"},
+        {"label": "PDF", "href": "#"}
+      ],
+      "tags": ["Controls", "DAQ", "Plasma"],
+      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=60"
+    },
+    {
+      "title": "Line‑Following Robot (Gazebo)",
+      "summary": "ROS Noetic sim, PID & imitation learning for lane keeping.",
+      "links": [
+        {"label": "Code", "href": "https://github.com/"},
+        {"label": "Write‑up", "href": "#"}
+      ],
+      "tags": ["ROS", "Gazebo", "Control"],
+      "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=60"
+    },
+    {
+      "title": "Thermal Cycler",
+      "summary": "Rapid thermal system: 20°C↔800°C with closed‑loop control.",
+      "links": [
+        {"label": "Notes", "href": "#"}
+      ],
+      "tags": ["Thermal", "Embedded"],
+      "image": "https://images.unsplash.com/photo-1559757175-08c8eeec75a3?w=1200&q=60"
+    }
+  ]
+  </script>
+
+  <script id="data-posts" type="application/json">
+  [
+    {
+      "title": "A very small note on anti‑alias filtering",
+      "date": "2025-07-12",
+      "tags": ["Measurement", "Signals"],
+      "content": "When sampling up to 50 kHz, a first‑order RC set slightly above the band of interest often beats \"infinite\" bandwidth probes in practice…"
+    },
+    {
+      "title": "Choosing flight connectors for small sats",
+      "date": "2025-06-30",
+      "tags": ["Connectors", "Aerospace"],
+      "content": "Quick criteria: current density, derating, latching, keying, outgassing, EMC, and serviceability. Document backshells and strain relief early."
+    }
+  ]
+  </script>
+
+  <script id="data-books" type="application/json">
+  [
+    {
+      "title": "The Design of Everyday Things",
+      "author": "Don Norman",
+      "rating": 5,
+      "blurb": "A timeless checklist for empathetic engineering."
+    },
+    {
+      "title": "Structures: Or Why Things Don't Fall Down",
+      "author": "J.E. Gordon",
+      "rating": 4,
+      "blurb": "Gentle, vivid intro to mechanics."
+    }
+  ]
+  </script>
+
+  <script id="data-photos" type="application/json">
+  [
+    { "src": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=60", "alt": "Ocean cliffs at sunset", "caption": "Farallon vibes" },
+    { "src": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=1600&q=60", "alt": "City skyline at dusk", "caption": "Evening lights" },
+    { "src": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600&q=60", "alt": "Forest trail", "caption": "Quiet walk" },
+    { "src": "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1600&q=60", "alt": "Mountain lake", "caption": "Thin air" },
+    { "src": "https://images.unsplash.com/photo-1500534314210-7d80a0586b16?w=1600&q=60", "alt": "Desert road", "caption": "Long drive" }
+  ]
+  </script>
+
+  <!-- ===== Minimal JS to render content & modals ===== -->
+  <script>
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+
+    const formatDate = iso => {
+      try { return new Date(iso).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'2-digit' }); } catch { return iso; }
+    };
+
+    const create = (tag, attrs={}, children=[]) => {
+      const el = document.createElement(tag);
+      for (const [k,v] of Object.entries(attrs)) {
+        if (k === 'class') el.className = v;
+        else if (k === 'html') el.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.substring(2), v);
+        else el.setAttribute(k, v);
+      }
+      for (const child of [].concat(children)) if (child) el.append(child);
+      return el;
+    };
+
+    const openModal = (title, contentEl, lightbox=false) => {
+      $('#modal-title').textContent = title || '';
+      const host = $('#modal-content');
+      host.replaceChildren(contentEl);
+      const m = $('#modal');
+      m.classList.toggle('lightbox', !!lightbox);
+      const bd = $('#backdrop');
+      bd.style.display = 'flex';
+      bd.setAttribute('aria-hidden', 'false');
+    };
+    const closeModal = () => {
+      const bd = $('#backdrop');
+      bd.style.display = 'none';
+      bd.setAttribute('aria-hidden', 'true');
+      $('#modal-content').replaceChildren();
+    };
+    $('#modal-close').addEventListener('click', closeModal);
+    $('#backdrop').addEventListener('click', (e) => { if (e.target.id === 'backdrop') closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Render Projects
+    const projects = JSON.parse($('#data-projects').textContent);
+    const projHost = $('#projects');
+    projects.forEach(p => {
+      const img = p.image ? create('img', { src: p.image, alt: p.title, loading:'lazy', onerror: (e)=>{ e.target.style.display='none'; } }) : null;
+      const links = (p.links||[]).map(l => create('a', { href: l.href, class:'btn', target:'_blank', rel:'noopener' }, l.label));
+      const tags = (p.tags||[]).map(t => create('span', { class:'tag' }, t));
+      const card = create('article', { class:'card', role:'listitem' }, [
+        img,
+        create('h3', {}, p.title),
+        create('p', { class:'meta' }, p.summary||''),
+        tags.length ? create('div', { class:'tags' }, tags) : null,
+        links.length ? create('div', { class:'row' }, links) : null
+      ]);
+      projHost.append(card);
+    });
+
+    // Render Posts
+    const posts = JSON.parse($('#data-posts').textContent);
+    const postHost = $('#posts');
+    posts.forEach(post => {
+      const open = () => {
+        const content = create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/\n/g,'</p><p>')}</p>` });
+        openModal(post.title, content);
+      };
+      const card = create('article', { class:'card', role:'listitem' }, [
+        create('h3', {}, post.title),
+        create('div', { class:'meta' }, `${formatDate(post.date)}${post.tags?.length? ' • ' + post.tags.join(', ') : ''}`),
+        create('div', { class:'row' }, [ create('button', { class:'btn', onclick: open }, 'Read') ])
+      ]);
+      postHost.append(card);
+    });
+
+    // Render Books
+    const books = JSON.parse($('#data-books').textContent);
+    const bookHost = $('#books-list');
+    const stars = n => '★★★★★☆☆☆☆☆'.slice(5 - Math.max(0, Math.min(5,n)), 10 - Math.max(0, Math.min(5,n)));
+    books.forEach(b => {
+      const card = create('article', { class:'card', role:'listitem' }, [
+        create('h3', {}, b.title),
+        create('div', { class:'meta' }, `${b.author || ''}`),
+        create('div', { class:'meta' }, `Rating: ${'★'.repeat(b.rating||0)}${'☆'.repeat(5-(b.rating||0))}`),
+        create('p', {}, b.blurb||'')
+      ]);
+      bookHost.append(card);
+    });
+
+    // Render Photos + Lightbox
+    const photos = JSON.parse($('#data-photos').textContent);
+    const photoHost = $('#photo-grid');
+    photos.forEach((ph, i) => {
+      const thumb = create('div', { class:'photo', role:'listitem' });
+      const im = create('img', { alt: ph.alt||'', loading:'lazy' });
+      im.src = ph.src; // set after
+      im.onerror = () => { im.src = `https://via.placeholder.com/800x600?text=Photo`; };
+      thumb.append(im);
+      thumb.addEventListener('click', () => {
+        const wrap = create('div', { class:'content lightbox' });
+        const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
+        wrap.append(big);
+        openModal(ph.caption || 'Photo', wrap, true);
+      });
+      photoHost.append(thumb);
+    });
+
+    // Year
+    $('#year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for nav links
+    $$('.links a').forEach(a => a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id.startsWith('#')) {
+        e.preventDefault();
+        document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }));
+  </script>
+
+  <noscript>
+    <div style="max-width:1000px;margin:24px auto;padding:12px 16px;border:1px solid #e5e7eb;border-radius:12px;color:#6b7280;">
+      This site is fully static. Enable JavaScript to render portfolio items, posts, books, and photos.
+    </div>
+  </noscript>
+</body>
+</html>
