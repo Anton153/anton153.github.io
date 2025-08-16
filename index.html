@@ -119,7 +119,7 @@
         <a href="#blog">Blog</a>
         <a href="#books">Books</a>
         <a href="#photos">Travel</a>
-        <a id="contact-link" href="mailto:you@example.com">Contact</a>
+        <a id="contact-link" href="mailto:antonshoham@gmail.com">Contact</a>
       </div>
     </nav>
   </header>
@@ -127,17 +127,17 @@
   <main>
     <section id="intro" aria-labelledby="intro-title">
       <h1 id="intro-title">Anton's Blog/Portfolio</h1>
-      <p class="lead">The purpose of this webpage is to share some of my technical experiences, opinions, book reviews and travel memories.</p>
+      <p class="lead">Welcome to my website!</p>
     </section>
 
     <section id="about" aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
       <p class="lead">Hi, I'm Anton Shoham — an Engineering Physics student at UBC</p>
       <div class="spacer"></div>
-      <p>remember to add text here</p>
+      <p>The purpose of this webpage is to provie a platform for me to share my engineering projects, short opinion pieces, book reviews and travel photos! Please feel free to check out my resume or send me an email.</p>
       <div class="row" style="margin-top:12px;">
         <a id="resume-btn" class="btn" href="Anton_Shoham_Resume.pdf" target="_blank" rel="noopener">Open resume</a>
-        <a id="email-btn" class="btn" href="mailto:you@example.com">Email me</a>
+        <a id="email-btn" class="btn" href="mailto:antonshoham@gmail.com">Email me</a>
       </div>
     </section>
 
@@ -183,7 +183,7 @@
 
   <!-- ===== Site config (edit email/resume path here) ===== -->
   <script id="site-config" type="application/json">
-  { "owner": "Anton Shoham", "email": "you@example.com", "resume": "Anton_Shoham_Resume.pdf" }
+  { "owner": "Anton Shoham", "email": "antonshoham@gmail.com", "resume": "Anton_Shoham_Resume.pdf" }
   </script>
 
   <!-- ===== Inline content data (edit these to populate your site) ===== -->
@@ -205,26 +205,25 @@
         {"src": "projects/marathonfusion/DAQ_back.jpg", "caption": "Low voltage electronics"},
         {"src": "projects/marathonfusion/gas_feed.jpg", "caption": "Gas feed system and electronics"},
         {"src": "projects/marathonfusion/Battery Cart State Machine.png", "caption": "Power electronics state machine"},
-        {"src": "projects/marathonfusion/CHARYBDIS State Machine.png", "caption": "Software state machine"}
+        {"src": "projects/marathonfusion/CHARYBDIS State Machine.png", "caption": "Software state machine"},
+        {"src": "projects/marathonfusion/hollow_cathode_diagram.png", "caption": "Hollow cathode diagram"}
       ],
       "links": [
         {"label": "GitHub", "href": "https://github.com/Anton153"},
         {"label": "Report", "href": "#"}
       ],
       "tags": ["Plasma", "DAQ", "Controls"],
-      "image": "projects/marathonfusion/DAQ_Front.jpg"
+      "image": "projects/marathonfusion/CHAR_5_CROPPED.gif"
     },
     {
-      "title": "Line‑Following Robot in Gazebo",
-      "summary": "ROS Noetic simulation, camera‑based lane keeping with PID and imitation learning.",
-      "details": "Implemented PID baseline and an imitation‑learning policy from recorded demonstrations. Built tooling to log frames + cmd_vel, trained a small CNN, and compared lap stability vs loss.",
+      "title": "Induction Heater (Marathon Fusion)",
+      "summary": "Simulated and designed an induction heater to braze copper.",
       "bullets": [
-        "ROS Noetic + Gazebo sim world",
-        "Imitation learning baseline vs PID",
-        "Tools for dataset logging & eval"
+        "Wrote python scripts to numerically solve relevant PDEs to find optimal design parameters",
+        "Built the furnace (quartz vacuum tube, wrapped with induction coils. Hollow steel cylinder inside quartz is heated by coils, which then radiates heat to copper work piece) to braze tin onto copper"
       ],
       "gallery": [
-        {"src": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1600&q=60", "alt": "Robot prototype", "caption": "Sim rig & camera"}
+        {"src": "projects/marathonfusion/azimuthal current density.png", "caption": "Azimuthal current density"}
       ],
       "links": [
         {"label": "Code", "href": "https://github.com/Anton153"},
