@@ -12,7 +12,7 @@
   <style>
     /* ===== Minimal, uncluttered design ===== */
     :root {
-      --bg: #EBF4F7;
+      --bg: #ffffff;
       --text: #0a0a0a;
       --muted: #6b7280; /* cool gray */
       --card: #f7f7f7;
@@ -77,6 +77,11 @@
     .photos { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
     .photo { border-radius: 12px; overflow: hidden; position: relative; cursor: zoom-in; background: #fafafa; border: 1px solid var(--line); }
 
+    /* Project gallery (thumbs with captions) */
+    .gallery .shot { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: #fafafa; cursor: zoom-in; }
+    .gallery .shot img { width: 100%; height: auto; display: block; }
+    .gallery .shot figcaption { font-size: 12px; color: var(--muted); padding: 6px 8px; border-top: 1px solid var(--line); }
+
     /* Footer */
     footer { max-width: var(--maxw); margin: 0 auto; padding: 28px 16px 60px; color: var(--muted); }
 
@@ -88,11 +93,16 @@
     .modal .content { padding: 16px; overflow: auto; }
     .modal .close { border: 1px solid var(--line); background: #fff; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
 
-    /* Lightbox image */
+/* Lightbox image */
     .lightbox img { width: 100%; height: auto; }
     .lightbox .content { padding: 0; background: #000; }
-    .lightbox header { background: #000; color: #fff; border-bottom-color: rgba(255,255,255,0.15); }
+    .modal.lightbox header { display: none; }
     .lightbox button { background: #111; color: #fff; border-color: rgba(255,255,255,0.2); }
+    .modal.lightbox .content { padding: 0; background: #000; }
+    .modal.lightbox img { width: 100%; height: auto; display: block; }
+    .lightbox-fig { margin: 0; }
+    .lightbox-fig figcaption { color: #fff; background: #000; padding: 10px 12px; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.15); }
+
 
     /* Small helpers */
     .spacer { height: 8px; }
@@ -116,17 +126,17 @@
 
   <main>
     <section id="intro" aria-labelledby="intro-title">
-      <h1 id="intro-title">Simple, distraction‑free home on the web</h1>
-      <p class="lead">An uncluttered space for my engineering portfolio, notes, book reviews, and travel photos.</p>
+      <h1 id="intro-title">Anton's Blog/Portfolio</h1>
+      <p class="lead">The purpose of this webpage is to share some of my technical experiences, opinions, book reviews and travel memories.</p>
     </section>
 
     <section id="about" aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
-      <p class="lead">Hi, I'm Anton Shoham — an Engineering Physics student at UBC who enjoys building practical systems across plasma, robotics, controls, and embedded software.</p>
+      <p class="lead">Hi, I'm Anton Shoham — an Engineering Physics student at UBC</p>
       <div class="spacer"></div>
-      <p>I’ve worked on a hollow cathode development project at Marathon Fusion (plasma centrifuge testbed, DAQ & control electronics), firmware and controls on UBC Orbit’s CubeSat, and previously built a high‑temperature thermal cycler at MKS Instruments. On the fun side, I’ve designed two burger‑building robots and like lightweight simulation + control projects in ROS.</p>
+      <p>remember to add text here</p>
       <div class="row" style="margin-top:12px;">
-        <a id="resume-btn" class="btn" href="Anton_Shoham_Resume.pdf" target="_blank" rel="noopener">Open Résumé</a>
+        <a id="resume-btn" class="btn" href="Anton_Shoham_Resume.pdf" target="_blank" rel="noopener">Open resume</a>
         <a id="email-btn" class="btn" href="mailto:you@example.com">Email me</a>
       </div>
     </section>
@@ -180,20 +190,42 @@
   <script id="data-projects" type="application/json">
   [
     {
-      "title": "Hollow Cathode Test Stand (Marathon Fusion)",
-      "summary": "Designed control electronics, safety interlocks, and DAQ for a plasma centrifuge testbed.",
-      "details": "Built DAQ and control around LabJack / microcontrollers, implemented interlocks for HV supplies, and produced test procedures + wiring docs. Integrated sensors and logged runs for analysis.",
+      "title": "Plasma Centrifuge (Marathon Fusion)",
+      "summary": "Designed control electronics and software, safety interlocks, and DAQ for a plasma. Helped build and test hollow cathode plasma source.",
+      "bullets": [
+        "Helped design and machine Hollow Cathode plasma source",
+        "Implemented state machine which controls: gas flow, magnetic field, plasma ignition and hollow cathode temperature",
+        "Implemented monitoring and saving of pressure, temperature, and current data a .csv",
+        "Implemented safety interlocks, including emergency stop button, relay status checks, and light and alarm indicators",
+        "Mitigated EMI using fiber optics for E-Stop and relay status checks"
+      ],
+      "gallery": [
+        
+        {"src": "projects/marathonfusion/DAQ_Front.jpg", "caption": "Low voltage electronics"},
+        {"src": "projects/marathonfusion/DAQ_back.jpg", "caption": "Low voltage electronics"},
+        {"src": "projects/marathonfusion/gas_feed.jpg", "caption": "Gas feed system and electronics"},
+        {"src": "projects/marathonfusion/Battery Cart State Machine.png", "caption": "Power electronics state machine"},
+        {"src": "projects/marathonfusion/CHARYBDIS State Machine.png", "caption": "Software state machine"}
+      ],
       "links": [
         {"label": "GitHub", "href": "https://github.com/Anton153"},
         {"label": "Report", "href": "#"}
       ],
       "tags": ["Plasma", "DAQ", "Controls"],
-      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=60"
+      "image": "projects/marathonfusion/DAQ_Front.jpg"
     },
     {
       "title": "Line‑Following Robot in Gazebo",
       "summary": "ROS Noetic simulation, camera‑based lane keeping with PID and imitation learning.",
       "details": "Implemented PID baseline and an imitation‑learning policy from recorded demonstrations. Built tooling to log frames + cmd_vel, trained a small CNN, and compared lap stability vs loss.",
+      "bullets": [
+        "ROS Noetic + Gazebo sim world",
+        "Imitation learning baseline vs PID",
+        "Tools for dataset logging & eval"
+      ],
+      "gallery": [
+        {"src": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1600&q=60", "alt": "Robot prototype", "caption": "Sim rig & camera"}
+      ],
       "links": [
         {"label": "Code", "href": "https://github.com/Anton153"},
         {"label": "Write‑up", "href": "#"}
@@ -204,7 +236,8 @@
     {
       "title": "UBC Orbit CubeSat — Firmware & Controls",
       "summary": "Firmware/controls work on a student satellite program; data acquisition and system integration.",
-      "details": "Wrote firmware and test utilities for subsystem bring‑up, participated in hardware‑in‑the‑loop testing, and contributed to data handling + telemetry procedures.",
+      "details": "Wrote firmware and test utilities for subsystem bring‑up, participated in hardware‑in-the-loop testing, and contributed to data handling + telemetry procedures.",
+      "bullets": ["HAL drivers & test fixtures", "Hardware-in-the-loop testing", "Telemetry utilities"],
       "links": [
         {"label": "UBC Orbit", "href": "https://github.com/Anton153"}
       ],
@@ -215,6 +248,7 @@
       "title": "High‑Temperature Thermal Cycler (MKS Instruments)",
       "summary": "20–800°C thermal system with closed‑loop control; modeling, control, and hardware bring‑up.",
       "details": "Developed ramp/soak profiles, tuned PID, and built a simple interface for logging and setpoint control. Verified thermal response with sensors and generated a BOM.",
+      "bullets": ["PID tuning & profiles", "Sensor calibration", "BOM & build notes"],
       "links": [
         {"label": "Notes", "href": "#"}
       ],
@@ -225,6 +259,7 @@
       "title": "Plasma Centrifuge Contactor Panel",
       "summary": "High‑current distribution with relays and safety interlocks; schematic capture and wiring.",
       "details": "Designed wiring, interlocks, and contactor control for the test stand; documented harnessing and labeling for safe operation and maintenance.",
+      "bullets": ["Contactor + relay logic", "Safety interlocks", "Harness labeling"],
       "links": [
         {"label": "Schematic", "href": "#"}
       ],
@@ -235,6 +270,7 @@
       "title": "Burger‑Building Robots (Mechanical Design)",
       "summary": "Two robots with claws, conveyor, and omni/mecanum drivetrains; designed in SolidWorks and fabricated via laser‑cutting/3D‑printing.",
       "details": "Led mechanical design, produced assemblies and drawings, and oversaw fabrication + testing. Explored claw kinematics and belt timing.",
+      "bullets": ["SolidWorks assemblies", "Laser-cut + 3D-printed parts", "Omni/mecanum drivetrain"],
       "links": [
         {"label": "Gallery", "href": "#"}
       ],
@@ -358,7 +394,7 @@
     if (cfg.email) { $('#contact-link').href = `mailto:${cfg.email}`; $('#email-btn').href = `mailto:${cfg.email}`; }
     if (cfg.resume) { $('#resume-btn').href = cfg.resume; }
 
-    // Render Projects (full-width rows with Read more)
+    // Render Projects (full-width rows with Read more + bullets + gallery)
     const projects = JSON.parse($('#data-projects').textContent);
     const projHost = $('#projects');
     projects.forEach(p => {
@@ -370,11 +406,42 @@
       const title = create('h3', {}, p.title);
       const summary = create('p', { class:'meta' }, p.summary || '');
 
-      const more = create('div', { class:'more' }, [
-        p.details ? create('p', {}, p.details) : null,
-        (p.tags?.length ? create('div', { class:'tags' }, p.tags.map(t => create('span', { class:'tag' }, t))) : null),
-        (p.links?.length ? create('div', { class:'actions' }, p.links.map(l => create('a', { href:l.href, class:'btn', target:'_blank', rel:'noopener' }, l.label))) : null)
-      ]);
+      // Build expanded area
+      const expandedChildren = [];
+      if (p.details) expandedChildren.push(create('p', {}, p.details));
+
+      if (Array.isArray(p.bullets) && p.bullets.length) {
+        const ul = create('ul', { class:'bullets' });
+        p.bullets.forEach(b => ul.append(create('li', {}, b)));
+        expandedChildren.push(ul);
+      }
+
+      if (Array.isArray(p.gallery) && p.gallery.length) {
+        const grid = create('div', { class:'grid photos gallery' });
+        p.gallery.forEach(ph => {
+          const fig = create('figure', { class:'shot' });
+          const im = create('img', { src: ph.src, alt: ph.alt || '', loading:'lazy' });
+          im.onerror = () => { im.src = `https://via.placeholder.com/800x600?text=Photo`; };
+          fig.append(im);
+          if (ph.caption) fig.append(create('figcaption', { class:'cap' }, ph.caption));
+          fig.addEventListener('click', () => {
+          const figure = create('figure', { class:'lightbox-fig' });
+          const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
+          figure.append(big);
+          if (ph.caption) figure.append(create('figcaption', {}, ph.caption));
+          const wrap = create('div', { class:'content lightbox' }, figure);
+          openModal('', wrap, true);
+        });
+
+          grid.append(fig);
+        });
+        expandedChildren.push(grid);
+      }
+
+      if (p.tags?.length) expandedChildren.push(create('div', { class:'tags' }, p.tags.map(t => create('span', { class:'tag' }, t))));
+      if (p.links?.length) expandedChildren.push(create('div', { class:'actions' }, p.links.map(l => create('a', { href:l.href, class:'btn', target:'_blank', rel:'noopener' }, l.label))));
+
+      const more = create('div', { class:'more' }, expandedChildren);
 
       const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'Read more');
       readBtn.addEventListener('click', () => {
@@ -459,11 +526,14 @@
         im.onerror = () => { im.src = `https://via.placeholder.com/800x600?text=Photo`; };
         thumb.append(im);
         thumb.addEventListener('click', () => {
-          const wrap = create('div', { class:'content lightbox' });
-          const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
-          wrap.append(big);
-          openModal(ph.caption || tr.title, wrap, true);
-        });
+        const figure = create('figure', { class:'lightbox-fig' });
+        const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
+        figure.append(big);
+        if (ph.caption) figure.append(create('figcaption', {}, ph.caption));
+        const wrap = create('div', { class:'content lightbox' }, figure);
+        openModal('', wrap, true);
+      });
+
         gallery.append(thumb);
       });
 
