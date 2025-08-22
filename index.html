@@ -388,6 +388,16 @@
     $('#backdrop').addEventListener('click', (e) => { if (e.target.id === 'backdrop') closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
+    const openPdfView = (title, html) => {
+      const win = window.open('', '_blank');
+      if (!win) return;
+      win.document.write(`<!DOCTYPE html><html><head><title>${title}</title><style>
+        body{font-family:"Times New Roman",serif;margin:40px auto;max-width:800px;line-height:1.6;}
+        h1,h2,h3{text-align:center;}
+      </style></head><body><h1>${title}</h1>${html}</body></html>`);
+      win.document.close();
+    };
+
     // Apply config
     if (cfg.owner) { $('#brand').textContent = cfg.owner; $('#owner').textContent = cfg.owner; }
     if (cfg.email) { $('#contact-link').href = `mailto:${cfg.email}`; $('#email-btn').href = `mailto:${cfg.email}`; }
@@ -442,11 +452,9 @@
 
       const more = create('div', { class:'more' }, expandedChildren);
 
-      const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'Read more');
+      const readBtn = create('button', { class:'btn readmore' }, 'Read more');
       readBtn.addEventListener('click', () => {
-        const ex = article.classList.toggle('expanded');
-        readBtn.textContent = ex ? 'Read less' : 'Read more';
-        readBtn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+        openPdfView(p.title, more.innerHTML);
       });
 
       const right = create('div', {}, [
@@ -472,11 +480,9 @@
       const more = create('div', { class:'more' }, [
         create('div', { class:'content-body', html: `<p>${(post.content||'').replace(/\n/g,'</p><p>')}</p>` })
       ]);
-      const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'Read more');
+      const readBtn = create('button', { class:'btn readmore' }, 'Read more');
       readBtn.addEventListener('click', () => {
-        const ex = article.classList.toggle('expanded');
-        readBtn.textContent = ex ? 'Read less' : 'Read more';
-        readBtn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+        openPdfView(post.title, more.innerHTML);
       });
       const right = create('div', {}, [ title, meta, summary, create('div', { class:'actions' }, [ readBtn ]), more ]);
       article.append(right);
@@ -498,8 +504,7 @@
         const more = create('div', { class:'more' }, [ create('div', { class:'content-body', html: `<p>${(b.review||'').replace(/\n/g,'</p><p>')}</p>` }) ]);
         const readBtn = create('button', { class:'btn' }, 'Read more');
         readBtn.addEventListener('click', () => {
-          const ex = card.classList.toggle('expanded');
-          readBtn.textContent = ex ? 'Read less' : 'Read more';
+          openPdfView(b.title, more.innerHTML);
         });
         card.append(create('div', { class:'row' }, [readBtn]), more);
       }
@@ -537,11 +542,9 @@
       });
 
       const more = create('div', { class:'more' }, [ gallery ]);
-      const readBtn = create('button', { class:'btn readmore', 'aria-expanded':'false' }, 'View photos');
+      const readBtn = create('button', { class:'btn readmore' }, 'View photos');
       readBtn.addEventListener('click', () => {
-        const ex = article.classList.toggle('expanded');
-        readBtn.textContent = ex ? 'Hide photos' : 'View photos';
-        readBtn.setAttribute('aria-expanded', ex ? 'true' : 'false');
+        openPdfView(tr.title, more.innerHTML);
       });
 
       const right = create('div', {}, [ title, meta, note, create('div', { class:'actions' }, [ readBtn ]), more ]);
