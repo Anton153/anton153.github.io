@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 20px; line-height: 1.6; max-width: 800px; }
+    img { max-width: 100%; height: auto; display: block; margin: 16px 0; }
+    ul { margin: 16px 0; }
+    .gallery { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    .gallery figure { margin: 0; }
+    .gallery figcaption { font-size: 14px; color: #555; }
+  </style>
+</head>
+<body>
+  <main id="content"></main>
+  <script>
+    fetch('projects/projects.json')
+      .then(r => r.json())
+      .then(data => {
+        const params = new URLSearchParams(location.search);
+        const slug = params.get('slug');
+        const project = data.find(p => p.slug === slug);
+        const host = document.getElementById('content');
+        if (!project) {
+          host.textContent = 'Project not found.';
+          return;
+        }
+        document.title = project.title;
+        host.appendChild(Object.assign(document.createElement('h1'), { textContent: project.title }));
+        if (project.details) {
+          host.appendChild(Object.assign(document.createElement('p'), { textContent: project.details }));
+        } else if (project.summary) {
+          host.appendChild(Object.assign(document.createElement('p'), { textContent: project.summary }));
+        }
+        if (Array.isArray(project.bullets) && project.bullets.length) {
+          const ul = document.createElement('ul');
+          project.bullets.forEach(b => ul.appendChild(Object.assign(document.createElement('li'), { textContent: b })));
+          host.appendChild(ul);
+        }
+        if (Array.isArray(project.gallery) && project.gallery.length) {
+          const gallery = document.createElement('div');
+          gallery.className = 'gallery';
+          project.gallery.forEach(ph => {
+            const fig = document.createElement('figure');
+            const img = Object.assign(document.createElement('img'), { src: ph.src, alt: ph.caption || '' });
+            fig.appendChild(img);
+            if (ph.caption) {
+              fig.appendChild(Object.assign(document.createElement('figcaption'), { textContent: ph.caption }));
+            }
+            gallery.appendChild(fig);
+          });
+          host.appendChild(gallery);
+        }
+      });
+  </script>
+</body>
+</html>

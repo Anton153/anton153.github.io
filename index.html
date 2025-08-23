@@ -190,6 +190,7 @@
   <script id="data-projects" type="application/json">
   [
     {
+      "slug": "plasma-centrifuge",
       "title": "Plasma Centrifuge (Marathon Fusion)",
       "summary": "Designed control electronics and software, safety interlocks, and DAQ for a plasma. Helped build and test hollow cathode plasma source.",
       "bullets": [
@@ -216,6 +217,7 @@
       "image": "projects/marathonfusion/CHAR_5_CROPPED.gif"
     },
     {
+      "slug": "induction-heater",
       "title": "Induction Heater (Marathon Fusion)",
       "summary": "Simulated and designed an induction heater to braze copper.",
       "bullets": [
@@ -233,6 +235,7 @@
       "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=1200&q=60"
     },
     {
+      "slug": "ubc-orbit-cubesat",
       "title": "UBC Orbit CubeSat — Firmware & Controls",
       "summary": "Firmware/controls work on a student satellite program; data acquisition and system integration.",
       "details": "Wrote firmware and test utilities for subsystem bring‑up, participated in hardware‑in-the-loop testing, and contributed to data handling + telemetry procedures.",
@@ -244,6 +247,7 @@
       "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=60"
     },
     {
+      "slug": "thermal-cycler",
       "title": "High‑Temperature Thermal Cycler (MKS Instruments)",
       "summary": "20–800°C thermal system with closed‑loop control; modeling, control, and hardware bring‑up.",
       "details": "Developed ramp/soak profiles, tuned PID, and built a simple interface for logging and setpoint control. Verified thermal response with sensors and generated a BOM.",
@@ -255,6 +259,7 @@
       "image": "https://images.unsplash.com/photo-1559757175-08c8eeec75a3?w=1200&q=60"
     },
     {
+      "slug": "contactor-panel",
       "title": "Plasma Centrifuge Contactor Panel",
       "summary": "High‑current distribution with relays and safety interlocks; schematic capture and wiring.",
       "details": "Designed wiring, interlocks, and contactor control for the test stand; documented harnessing and labeling for safe operation and maintenance.",
@@ -266,6 +271,7 @@
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&q=60"
     },
     {
+      "slug": "burger-robots",
       "title": "Burger‑Building Robots (Mechanical Design)",
       "summary": "Two robots with claws, conveyor, and omni/mecanum drivetrains; designed in SolidWorks and fabricated via laser‑cutting/3D‑printing.",
       "details": "Led mechanical design, produced assemblies and drawings, and oversaw fabrication + testing. Explored claw kinematics and belt timing.",
@@ -406,53 +412,15 @@
       const summary = create('p', { class:'meta' }, p.summary || '');
 
       // Build expanded area
-      const expandedChildren = [];
-      if (p.details) expandedChildren.push(create('p', {}, p.details));
-
-      if (Array.isArray(p.bullets) && p.bullets.length) {
-        const ul = create('ul', { class:'bullets' });
-        p.bullets.forEach(b => ul.append(create('li', {}, b)));
-        expandedChildren.push(ul);
-      }
-
-      if (Array.isArray(p.gallery) && p.gallery.length) {
-        const grid = create('div', { class:'grid photos gallery' });
-        p.gallery.forEach(ph => {
-          const fig = create('figure', { class:'shot' });
-          const im = create('img', { src: ph.src, alt: ph.alt || '', loading:'lazy' });
-          im.onerror = () => { im.src = `https://via.placeholder.com/800x600?text=Photo`; };
-          fig.append(im);
-          if (ph.caption) fig.append(create('figcaption', { class:'cap' }, ph.caption));
-          fig.addEventListener('click', () => {
-          const figure = create('figure', { class:'lightbox-fig' });
-          const big = create('img', { src: ph.src, alt: ph.alt||'', loading:'eager' });
-          figure.append(big);
-          if (ph.caption) figure.append(create('figcaption', {}, ph.caption));
-          const wrap = create('div', { class:'content lightbox' }, figure);
-          openModal('', wrap, true);
-        });
-
-          grid.append(fig);
-        });
-        expandedChildren.push(grid);
-      }
-
-      if (p.tags?.length) expandedChildren.push(create('div', { class:'tags' }, p.tags.map(t => create('span', { class:'tag' }, t))));
-      if (p.links?.length) expandedChildren.push(create('div', { class:'actions' }, p.links.map(l => create('a', { href:l.href, class:'btn', target:'_blank', rel:'noopener' }, l.label))));
-
-      const more = create('div', { class:'more' }, expandedChildren);
-
       const readBtn = create('button', { class:'btn readmore' }, 'Read more');
       readBtn.addEventListener('click', () => {
-        article.classList.toggle('expanded');
-        readBtn.textContent = article.classList.contains('expanded') ? 'Read less' : 'Read more';
+        window.open(`project.html?slug=${encodeURIComponent(p.slug)}`, '_blank');
       });
 
       const right = create('div', {}, [
         title,
         summary,
-        create('div', { class:'actions' }, [ readBtn ]),
-        more
+        create('div', { class:'actions' }, [ readBtn ])
       ]);
       article.append(right);
       projHost.append(article);
