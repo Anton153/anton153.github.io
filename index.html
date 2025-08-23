@@ -134,7 +134,7 @@
       <h2 id="about-title">About</h2>
       <p class="lead">Hi, I'm Anton Shoham — an Engineering Physics student at UBC</p>
       <div class="spacer"></div>
-      <p>The purpose of this webpage is to provie a platform for me to share my engineering projects, short opinion pieces, book reviews and travel photos! Please feel free to check out my resume or send me an email.</p>
+      <p>The purpose of this webpage is to provide a platform for me to share my engineering projects, short opinion pieces, book reviews and travel photos! Please feel free to check out my resume or send me an email.</p>
       <div class="row" style="margin-top:12px;">
         <a id="resume-btn" class="btn" href="Anton_Shoham_Resume.pdf" target="_blank" rel="noopener">Open resume</a>
         <a id="email-btn" class="btn" href="mailto:antonshoham@gmail.com">Email me</a>
@@ -388,19 +388,6 @@
     $('#backdrop').addEventListener('click', (e) => { if (e.target.id === 'backdrop') closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
-    const openPdfView = (title, html) => {
-      const win = window.open('', '_blank');
-      if (!win) return;
-      win.document.write(`<!DOCTYPE html><html><head><title>${title}</title>
-        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-        <style>
-          body{font-family:"Times New Roman",serif;margin:40px auto;max-width:800px;line-height:1.6;}
-          h1,h2,h3{text-align:center;}
-        </style></head><body><h1>${title}</h1>${html}</body></html>`);
-      win.document.close();
-      if (win.MathJax) win.MathJax.typeset();
-    };
-
     // Apply config
     if (cfg.owner) { $('#brand').textContent = cfg.owner; $('#owner').textContent = cfg.owner; }
     if (cfg.email) { $('#contact-link').href = `mailto:${cfg.email}`; $('#email-btn').href = `mailto:${cfg.email}`; }
@@ -457,7 +444,8 @@
 
       const readBtn = create('button', { class:'btn readmore' }, 'Read more');
       readBtn.addEventListener('click', () => {
-        openPdfView(p.title, more.innerHTML);
+        article.classList.toggle('expanded');
+        readBtn.textContent = article.classList.contains('expanded') ? 'Read less' : 'Read more';
       });
 
       const right = create('div', {}, [
@@ -485,7 +473,8 @@
       ]);
       const readBtn = create('button', { class:'btn readmore' }, 'Read more');
       readBtn.addEventListener('click', () => {
-        openPdfView(post.title, more.innerHTML);
+        article.classList.toggle('expanded');
+        readBtn.textContent = article.classList.contains('expanded') ? 'Read less' : 'Read more';
       });
       const right = create('div', {}, [ title, meta, summary, create('div', { class:'actions' }, [ readBtn ]), more ]);
       article.append(right);
@@ -507,7 +496,8 @@
         const more = create('div', { class:'more' }, [ create('div', { class:'content-body', html: `<p>${(b.review||'').replace(/\n/g,'</p><p>')}</p>` }) ]);
         const readBtn = create('button', { class:'btn' }, 'Read more');
         readBtn.addEventListener('click', () => {
-          openPdfView(b.title, more.innerHTML);
+          card.classList.toggle('expanded');
+          readBtn.textContent = card.classList.contains('expanded') ? 'Read less' : 'Read more';
         });
         card.append(create('div', { class:'row' }, [readBtn]), more);
       }
@@ -547,7 +537,8 @@
       const more = create('div', { class:'more' }, [ gallery ]);
       const readBtn = create('button', { class:'btn readmore' }, 'View photos');
       readBtn.addEventListener('click', () => {
-        openPdfView(tr.title, more.innerHTML);
+        article.classList.toggle('expanded');
+        readBtn.textContent = article.classList.contains('expanded') ? 'Hide photos' : 'View photos';
       });
 
       const right = create('div', {}, [ title, meta, note, create('div', { class:'actions' }, [ readBtn ]), more ]);
@@ -556,7 +547,6 @@
     });
 
     // Year
-    $('#year').textContent = new Date().getFullYear();
     $('#year').textContent = new Date().getFullYear();
 
     // Smooth scroll for nav links
